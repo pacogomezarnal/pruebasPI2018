@@ -1,0 +1,44 @@
+<?php
+
+namespace AppBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * Curso
+ *
+ * @ORM\Table(name="curso")
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\CursoRepository")
+ */
+class Curso
+{
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
+     */
+    private $id;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="nombre", type="string", length=255)
+     */
+    private $nombre;
+
+    //RELACIONES
+    /**
+     * @ORM\OneToMany(targetEntity="AlumnoCurso", mappedBy="curso")
+     * @ORM\OrderBy({"order_id" = "ASC"})
+     */
+    protected $cursoAlumnos;
+
+    public function __construct()
+    {
+        $this->cursoAlumnos = new ArrayCollection();
+    }
+
+
+}

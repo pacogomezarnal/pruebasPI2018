@@ -8,6 +8,12 @@ use Symfony\Component\HttpFoundation\Request;
 
 use AppBundle\Entity\Actividad;
 use AppBundle\Form\ActividadType;
+use AppBundle\Entity\Alumno;
+use AppBundle\Form\AlumnoType;
+use AppBundle\Entity\Curso;
+use AppBundle\Form\CursoType;
+use AppBundle\Entity\AlumnoCurso;
+use AppBundle\Form\AlumnoCursoType;
 
 class DefaultController extends Controller
 {
@@ -24,7 +30,7 @@ class DefaultController extends Controller
     /**
      * @Route("/nuevaActividad", name="nuevaActividad")
      */
-     public function nnuevaActividad(Request $request)
+     public function nuevaActividad(Request $request)
     {
       $actividad = new Actividad();
       $form = $this->createForm(ActividadType::class, $actividad);
@@ -49,5 +55,32 @@ class DefaultController extends Controller
         return $this->render('default/index.html.twig', [
             'base_dir' => realpath($this->getParameter('kernel.project_dir')).DIRECTORY_SEPARATOR,
         ]);
+    }
+    /**
+     * @Route("/nuevoAlumnoCursos", name="nuevoAlumnoCursos")
+     */
+     public function nuevoAlumnoCursos(Request $request)
+    {
+      $alumno = new Alumno();
+      $form = $this->createForm(AlumnoType::class, $alumno);
+
+      $form->handleRequest($request);
+
+      if ($form->isSubmitted() && $form->isValid()) {
+        $alumno = $form->getData();
+        $alumnoCursos=$alumno->getAlumnoCursos();
+        $em = $this->getDoctrine()->getManager();
+        foreach ($alumnoCursos as $alumnoCurso) {
+          $alumnoCurso->setAlumno($alumno);
+          $em->persist($alumnoCurso);
+        }
+        $em->persist($alumno);
+        $em->flush();
+        // replace this example code with whatever you need
+        return $this->render('default/index.html.twig', [
+            'base_dir' => realpath($this->getParameter('kernel.project_dir')).DIRECTORY_SEPARATOR,
+        ]);
+      }
+      return $this->render('gestion/nuevoAlumnoCurso.html.twig',array('form'=>$form->createView()));
     }
 }

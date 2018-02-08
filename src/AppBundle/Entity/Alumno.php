@@ -4,15 +4,14 @@ namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 
 /**
- * Categoria
+ * Alumno
  *
- * @ORM\Table(name="categoria")
- * @ORM\Entity(repositoryClass="AppBundle\Repository\CategoriaRepository")
+ * @ORM\Table(name="alumno")
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\AlumnoRepository")
  */
-class Categoria
+class Alumno
 {
     /**
      * @var int
@@ -30,20 +29,24 @@ class Categoria
      */
     private $nombre;
 
-    //RELACION  MANY-TO-MANY
-    /**
-    * @ORM\ManyToMany(targetEntity="Actividad", mappedBy="categorias")
-    */
-    private $actividades;
 
-    public function __construct() {
-        $this->actividades = new \Doctrine\Common\Collections\ArrayCollection();
-    }
+    //RELACIONES
+    /**
+      * @ORM\OneToMany(targetEntity="AlumnoCurso", mappedBy="alumno")
+      */
+     protected $alumnoCursos;
+
+     public function __construct()
+     {
+         $this->alumnoCursos = new ArrayCollection();
+     }
+
+
 
     /**
      * Get id
      *
-     * @return int
+     * @return integer
      */
     public function getId()
     {
@@ -55,7 +58,7 @@ class Categoria
      *
      * @param string $nombre
      *
-     * @return Categoria
+     * @return Alumno
      */
     public function setNombre($nombre)
     {
@@ -75,40 +78,42 @@ class Categoria
     }
 
     /**
-     * Add actividade
+     * Add alumnoCurso
      *
-     * @param \AppBundle\Entity\Actividad $actividade
+     * @param \AppBundle\Entity\AlumnoCurso $alumnoCurso
      *
-     * @return Categoria
+     * @return Alumno
      */
-    public function addActividade(\AppBundle\Entity\Actividad $actividade)
+    public function addAlumnoCurso(\AppBundle\Entity\AlumnoCurso $alumnoCurso)
     {
-        $this->actividades[] = $actividade;
+        $this->alumnoCursos[] = $alumnoCurso;
+        // set the *owning* side!
+        //$alumnoCurso->setAlumno($this);
 
         return $this;
     }
 
     /**
-     * Remove actividade
+     * Remove alumnoCurso
      *
-     * @param \AppBundle\Entity\Actividad $actividade
+     * @param \AppBundle\Entity\AlumnoCurso $alumnoCurso
      */
-    public function removeActividade(\AppBundle\Entity\Actividad $actividade)
+    public function removeAlumnoCurso(\AppBundle\Entity\AlumnoCurso $alumnoCurso)
     {
-        $this->actividades->removeElement($actividade);
+        $this->alumnoCursos->removeElement($alumnoCurso);
     }
 
     /**
-     * Get actividades
+     * Get alumnoCursos
      *
      * @return \Doctrine\Common\Collections\Collection
      */
-    public function getActividades()
+    public function getAlumnoCursos()
     {
-        return $this->actividades;
+        return $this->alumnoCursos;
     }
-
-    public function __toString(){
+    public function __toString()
+    {
       return $this->nombre;
     }
 }

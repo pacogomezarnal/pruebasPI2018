@@ -1,0 +1,44 @@
+<?php
+
+namespace AppBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * AlumnoCurso
+ *
+ * @ORM\Table(name="alumno_curso")
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\AlumnoCursoRepository")
+ */
+class AlumnoCurso
+{
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
+     */
+    private $id;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="anyoMatricula", type="datetime")
+     */
+    private $anyoMatricula;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="Curso", inversedBy="cursoAlumnos")
+     * @ORM\JoinColumn(name="cursoAlumno_id", referencedColumnName="id")
+     */
+    protected $curso;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="Alumno", inversedBy="alumnoCursos")
+     * @ORM\JoinColumn(name="alumnoCurso_id", referencedColumnName="id")
+     */
+    protected $alumno;
+
+
+}
