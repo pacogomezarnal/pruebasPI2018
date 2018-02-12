@@ -10,4 +10,25 @@ namespace AppBundle\Repository;
  */
 class ActividadRepository extends \Doctrine\ORM\EntityRepository
 {
+      /**
+     * @param $price
+     * @return Product[]
+     */
+    public function findTodayActivities()
+    {
+        $fecha=new \DateTime("now");
+        $hoy=$fecha->format('Y-m-d');
+        $semanaViene=$fecha->modify('+7 days')->format('Y-m-d');
+        $qb = $this->createQueryBuilder('p')
+            ->andWhere('p.created >= :hoy')
+            ->andWhere('p.created <= :semanaViene')
+            ->setParameter('hoy', $hoy)
+            ->setParameter('semanaViene', $semanaViene)
+            ->getQuery();
+
+        return $qb->getResult();
+
+        // to get just one result:
+        // $product = $qb->setMaxResults(1)->getOneOrNullResult();
+    }
 }

@@ -57,6 +57,15 @@ class DefaultController extends Controller
         ]);
     }
     /**
+     * @Route("/listaActHoy", name="listaActHoy")
+     */
+    public function listaActividadesHoyAction(Request $request)
+    {
+      $em = $this->getDoctrine()->getManager();
+      $activities = $em->getRepository(ACtividad::class)->findTodayActivities();
+      return $this->render('default/listarActividadesHoy.html.twig',array('activities'=>$activities));
+    }
+    /**s
      * @Route("/nuevoAlumnoCursos", name="nuevoAlumnoCursos")
      */
      public function nuevoAlumnoCursos(Request $request)

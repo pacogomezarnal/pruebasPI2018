@@ -30,6 +30,9 @@ class Actividad
      */
     private $nombre;
 
+    /** @ORM\Column(type="date") */
+    private $created;
+
     //RELACION  MANY-TO-MANY
 
     /**

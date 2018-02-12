@@ -1,0 +1,7 @@
+{# app/Resources/views/blog/index.html.twig #}
+{% extends 'base.html.twig' %}
+{% block body %}
+{% for activity in activities %}
+{{activity.nombre}}
+{% endfor %}
+{% endblock %}
